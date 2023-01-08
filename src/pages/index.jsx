@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Modal, Form } from "../components";
+import { Navbar, Modal, Form, GroupTask } from "../components";
 import { useState } from "react";
 
 export default function Index(){
@@ -51,6 +51,15 @@ export default function Index(){
                     onCancel={closeModalAddTask} 
                 />
             </Modal>
+
+            <div className="flex mt-6 overflow-x-auto gap-4 mx-4">
+                <GroupTask />
+                <GroupTask />
+                <GroupTask />
+                <GroupTask />
+                <GroupTask />
+                <GroupTask />
+            </div>
         </>
     )
 }

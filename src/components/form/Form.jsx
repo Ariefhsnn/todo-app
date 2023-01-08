@@ -4,7 +4,7 @@ import { MdOutlineWarning } from "react-icons/md";
 import { Button } from '..'
 
 export const Form = ({ isEdit, formType, onCancel }) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
 
     const cancelHandler = (e) => {
@@ -65,17 +65,24 @@ export const Form = ({ isEdit, formType, onCancel }) => {
                     <label htmlFor="title" className="font-bold text-gray-700">Title</label>
                     <input {...register('title', { required: 'Title Required!' })} type="text" placeholder="Type your Title" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none" />
                     {
-                        errors.name?.type === 'required' &&  
+                        errors.title?.type === 'required' &&  
                         <div className="flex items-center text-red-500 gap-1 w-full font-bold">                        
                             <MdOutlineWarning className="h-5 w-5" />
-                            <p>{errors.name?.message}</p>
+                            <p>{errors.title?.message}</p>
                         </div>                    
                     }
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label htmlFor="progress_percentage" className="font-bold text-gray-700">Description</label>
-                    <textarea {...register('description')} placeholder="Description" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none"></textarea>
+                    <label htmlFor="description" className="font-bold text-gray-700">Description</label>
+                    <textarea {...register('description', { required: 'Description Required!' }) } placeholder="Description" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none"></textarea>
+                    {
+                        errors.description?.type === 'required' &&  
+                        <div className="flex items-center text-red-500 gap-1 w-full font-bold">                        
+                            <MdOutlineWarning className="h-5 w-5" />
+                            <p>{errors.description?.message}</p>
+                        </div>                    
+                    }
                 </div>
 
                 <div className="flex w-full justify-end gap-5 items-center">
@@ -111,7 +118,7 @@ export const Form = ({ isEdit, formType, onCancel }) => {
         <Fragment>
             {formType === "task" ? (
                 <TaskForm />
-             ) : formType == "group" ? (
+             ) : formType === "group" ? (
                 <GroupForm />
              ) : (
                 <DeleteTask />
