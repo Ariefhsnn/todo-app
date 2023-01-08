@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Modal, TaskForm } from "../components";
+import { Navbar, Modal, Form } from "../components";
 import { useState } from "react";
 
 export default function Index(){
@@ -12,19 +12,44 @@ export default function Index(){
         setIsShowModalAddTask(true);        
     }
 
-    const closeModalAdd = () => {
+    const closeModalAddTask = () => {
         setIsShowModalAddTask(false);
     }
-     
+
+    const openModalAddGroup = () => {
+        setIsShowModalAddGroup(true);
+    }
+
+    const closeModalAddGroup = () => {
+        setIsShowModalAddGroup(false);
+    }
+
     return (
         <>
-            <Navbar onClick={openModalAddTask} />
+            <Navbar onClick={openModalAddGroup} />
+
+            {/* Modal Add Group */}
+            <Modal
+                isOpen={isShowModalAddGroup}
+                title="Add Group"
+                closeModal={closeModalAddGroup}
+            >
+                <Form 
+                    formType="group"
+                    onCancel={closeModalAddGroup}
+                />
+            </Modal>
+
+            {/* Modal Add Task */}
             <Modal
                 isOpen={isShowModalAddTask}
                 title="Add Task"
-                closeModal={closeModalAdd}                
+                closeModal={closeModalAddTask}                
             >
-                <TaskForm onCancel={closeModalAdd} />
+                <Form 
+                    formType="task" 
+                    onCancel={closeModalAddTask} 
+                />
             </Modal>
         </>
     )

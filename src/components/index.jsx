@@ -1,6 +1,6 @@
-import { Navbar } from "./Navbar";
-import { Button } from "./Button";
+import { Navbar } from "./layout/Navbar";
+import { Button } from "./button/Button";
 import { Modal } from "./modal/Modal";
-import { TaskForm } from "./form/TaskForm";
+import { Form } from "./form/Form";
 
-export { Navbar, Button, Modal, TaskForm }
+export { Navbar, Button, Modal, Form }

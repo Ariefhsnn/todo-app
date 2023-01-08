@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "./";
+import { Button } from "..";
 import { MdAdd } from 'react-icons/md'
 
 export const Navbar = ({onClick}) => {
