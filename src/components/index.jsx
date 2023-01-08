@@ -7,5 +7,6 @@ import { GroupTask } from "./Task/GroupTask";
 import { TaskCard } from "./Task/TaskCard";
 import { ProgressBar } from "./Task/ProgressBar";
 import { Dropdown } from "./Task/Dropdown";
+import { Loader } from "./loader/Loader";
 
-export { Navbar, Button, Modal, Form, Badge, GroupTask, TaskCard, ProgressBar, Dropdown }
+export { Navbar, Button, Modal, Form, Badge, GroupTask, TaskCard, ProgressBar, Dropdown, Loader }

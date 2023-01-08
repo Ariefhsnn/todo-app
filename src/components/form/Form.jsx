@@ -2,10 +2,11 @@ import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineWarning } from "react-icons/md";
 import { Button } from '..'
+import { usePostTodo } from "../../hooks/useTodo";
 
 export const Form = ({ isEdit, formType, onCancel }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const OnSubmit = data => usePostTodo(data.title, data.description);
 
     const cancelHandler = (e) => {
         e.preventDefault()
@@ -15,7 +16,7 @@ export const Form = ({ isEdit, formType, onCancel }) => {
     const TaskForm = () => {
         return (
             <form 
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(OnSubmit)}
                 className="flex flex-col w-full px-5 pb-5 gap-4 text-xs"
             >
                 <div className="flex flex-col gap-2">
@@ -58,7 +59,7 @@ export const Form = ({ isEdit, formType, onCancel }) => {
     const GroupForm = () => {
         return (
             <form 
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(OnSubmit)}
                 className="flex flex-col w-full px-5 pb-5 gap-4 text-xs"
             >
                 <div className="flex flex-col gap-2">
