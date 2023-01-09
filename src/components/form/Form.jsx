@@ -2,16 +2,22 @@ import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineWarning } from "react-icons/md";
 import { Button } from '..'
+import { PostTask } from "../../hooks/useTask";
 import { PostTodo } from "../../hooks/useTodo";
 
-export const Form = ({ isEdit, formType, onCancel, setLoading }) => {
+export const Form = ({ formType, onCancel, setLoading, todoId }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const OnSubmit = async (data) => {
-        if(formType == "group"){
-            setLoading(true)
+        if(formType === "group"){
+            setLoading(true);
             await PostTodo(data.title, data.description);            
             onCancel();    
             setLoading(false);     
+        }else if(formType === "task"){
+            setLoading(true);
+            await PostTask(data.name, data.progress_percentage, todoId);
+            onCancel();
+            setLoading(false);
         }
     } 
 

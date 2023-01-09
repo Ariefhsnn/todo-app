@@ -9,9 +9,11 @@ export default function Index(){
     const [isShowModalDeleteTask, setIsShowModalDeleteTask] = useState(false);
     const [isShowModalAddGroup, setIsShowModalAddGroup] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [todoId, setTodoId] = useState('')
     const todoData = GetTodo(loading);
 
-    const openModalAddTask = () => {
+    const openModalAddTask = (todoId) => {
+        setTodoId(todoId)
         setIsShowModalAddTask(true);        
     }
 
@@ -53,12 +55,22 @@ export default function Index(){
                 <Form 
                     formType="task" 
                     onCancel={closeModalAddTask} 
+                    setLoading={setLoading}
+                    todoId={todoId}
                 />
             </Modal>
 
             <div className="flex h-auto mt-6 overflow-x-auto gap-4 mx-4">
                 {todoData.length > 0 ? todoData.map((todo, idx) => (
-                    <GroupTask key={idx} title={todo.title} description={todo.description} />                
+                    <GroupTask 
+                        key={idx} 
+                        id={todo.id} 
+                        onClick={() => openModalAddTask(todo.id)}
+                        title={todo.title} 
+                        description={todo.description} 
+                        loading={loading}
+                        setLoading={setLoading}
+                    />                
                 )) : (                    
                     <div className="h-[90vh] w-full flex items-center">
                         <Loader />

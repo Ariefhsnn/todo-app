@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { BsThreeDots } from 'react-icons/bs';
 import { Popover, Transition } from '@headlessui/react'
 import * as Icons from "react-icons/md";
+import { DeleteTask } from "../../hooks/useTask";
 
-export const Dropdown = () => {
+export const Dropdown = ({todoId, taskId, setLoading}) => {
 
     const Option = ({name, onClick, danger, icon}) => {
         const Icon = ({ icon, ...props }) => {
@@ -22,13 +23,19 @@ export const Dropdown = () => {
         )
     }
 
+    const onDelete = async() => {
+        setLoading(true);
+        await DeleteTask(todoId, taskId);
+        setLoading(false)        
+    }
+
     return (
         <div className="flex w-full justify-end">
             <Popover>
                 {({ open }) => (
                     <>
-                    <Popover.Button>
-                    <BsThreeDots className="text-gray-500 flex text-xl" />        
+                    <Popover.Button as="button">
+                        <BsThreeDots className="text-gray-500 flex text-xl" />        
                     </Popover.Button>
                      <Transition
                         as="div"
@@ -41,13 +48,17 @@ export const Dropdown = () => {
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-0"
                     > 
-                        <Popover.Panel as="div" className="absolute right-0.5 z-[10000]">
-                            
-                            <div className="flex flex-col gap-3 bg-white border rounded-md w-64 py-3.5 px-4">
+                        <Popover.Panel as="div" className="fixed z-[1000] w-64 right-0.5">                            
+                            <div className="flex flex-col gap-3 bg-white border rounded-md py-3.5 px-4">
                                 <Option name="Move Right" icon="MdArrowForward" />
                                 <Option name="Move Left" icon="MdArrowBack" />
                                 <Option name="Edit" icon="MdOutlineEdit" />
-                                <Option name="Delete" icon="MdOutlineDelete" danger />
+                                <Option 
+                                    name="Delete" 
+                                    icon="MdOutlineDelete" 
+                                    danger   
+                                    onClick={onDelete}                              
+                                />
                             </div>
                         </Popover.Panel>
                      </Transition> 

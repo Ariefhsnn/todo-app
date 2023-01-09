@@ -1,4 +1,4 @@
-import { config } from "."
+import { config, token } from "."
 import axios from "axios"
 import { useEffect, useState } from "react";
 
@@ -47,8 +47,8 @@ export const EditTask = async (name, todoId, taskId, targetId) => {
 }
 
 export const DeleteTask = async (todoId, taskId) => {
-    try {
-        const res = await axios.delete(`todos/${todoId}/items/${taskId}`);
+    try {        
+        const res = await axios.delete(`todos/${todoId}/items/${taskId}`, config)
         let { status } = res;
         if(status === 204 || status === 200){
             return status;
