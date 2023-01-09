@@ -2,7 +2,7 @@ import { config } from "."
 import axios from "axios"
 import { useEffect, useState } from "react";
 
-export const useGetTodo = () => {
+export const GetTodo = (loading) => {
     const [taskData, setTaskData] = useState([]);
     
     useEffect(() => {
@@ -17,16 +17,16 @@ export const useGetTodo = () => {
         }
 
         loadTask();
-    }, [])
+    }, [loading])
 
     return taskData
 }
 
-export const usePostTodo = async (title, description) => {
+export const PostTodo = async (title, description) => {
     try {
         const res = await axios.post('todos', {title, description}, config);
         let { status } = res;
-        if(status == 201 || status == 200){
+        if(status === 201 || status === 200){
             return status;
         }
     } catch (error) {

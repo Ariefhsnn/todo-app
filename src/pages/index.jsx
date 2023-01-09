@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
 import { Navbar, Modal, Form, GroupTask, Loader } from "../components";
 import { useState } from "react";
-import { useGetTodo } from "../hooks/useTodo";
+import { GetTodo } from "../hooks/useTodo";
 
 export default function Index(){
     const [isShowModalAddTask, setIsShowModalAddTask] = useState(false);
     const [isShowModalEditTask, setIsShowModalEditTask] = useState(false);
     const [isShowModalDeleteTask, setIsShowModalDeleteTask] = useState(false);
     const [isShowModalAddGroup, setIsShowModalAddGroup] = useState(false);
-    const todoData = useGetTodo();
-
-    useEffect(() => {
-        console.log(todoData, 'data')
-    }, [todoData])
+    const [loading, setLoading] = useState(false);
+    const todoData = GetTodo(loading);
 
     const openModalAddTask = () => {
         setIsShowModalAddTask(true);        
@@ -31,18 +28,19 @@ export default function Index(){
     }
 
     return (
-        <>
+        <div className="h-screen">
             <Navbar onClick={openModalAddGroup} />
 
             {/* Modal Add Group */}
             <Modal
                 isOpen={isShowModalAddGroup}
                 title="Add Group"
-                closeModal={closeModalAddGroup}
+                closeModal={closeModalAddGroup}                                
             >
                 <Form 
                     formType="group"
                     onCancel={closeModalAddGroup}
+                    setLoading={setLoading}
                 />
             </Modal>
 
@@ -58,14 +56,17 @@ export default function Index(){
                 />
             </Modal>
 
-            <div className="flex mt-6 overflow-x-auto gap-4 mx-4">
+            <div className="flex h-auto mt-6 overflow-x-auto gap-4 mx-4">
                 {todoData.length > 0 ? todoData.map((todo, idx) => (
                     <GroupTask key={idx} title={todo.title} description={todo.description} />                
                 )) : (                    
-                    <Loader />
+                    <div className="h-[90vh] w-full flex items-center">
+                        <Loader />
+                    </div>     
                 )}                
             </div>
 
-        </>
+               
+        </div>
     )
 }
