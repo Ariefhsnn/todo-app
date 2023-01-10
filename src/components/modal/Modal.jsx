@@ -2,9 +2,16 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import { Fragment } from "react";
 import { MdClose } from "react-icons/md";
+import * as Icons from "react-icons/md";
 
-export const Modal = ({isOpen, closeModal, title, children, hiddenClose, position, border, customHeader}) => {  
+
+export const Modal = ({isOpen, closeModal, title, children, hiddenClose, position, border, customHeader, icon}) => {  
   
+  const Icon = ({ icon, ...props }) => {
+    const Icon = Icons[icon];
+    return <Icon {...props} />;
+  }
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -58,10 +65,18 @@ export const Modal = ({isOpen, closeModal, title, children, hiddenClose, positio
                     {title && (
                       <Dialog.Title
                         as="h3"
-                        className={`text-xl font-semibold leading-6 text-gray-700${
+                        className={`text-xl flex items-center gap-2 font-semibold leading-6 text-gray-700${
                           hiddenClose ? " w-full" : ""
                         }`}
                       >
+                        {icon && (
+                          <Icon 
+                            className="w-8 h-8 text-red-500"
+                            aria-hidden="true"
+                            icon={icon || ''}
+                          />
+                        )}
+                        
                         {title}                        
                       </Dialog.Title>
                     )}

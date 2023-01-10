@@ -83,8 +83,7 @@ export default function Index(){
                 <Form 
                     formType="task" 
                     onCancel={closeModalAddTask} 
-                    setLoading={setLoading}
-                    todoId={todoId}
+                    setLoading={setLoading}                    
                 />
             </Modal>
 
@@ -97,7 +96,8 @@ export default function Index(){
                 <Form 
                     formType="task" 
                     onCancel={closeModalEditTask} 
-                    setLoading={setLoading}                    
+                    setLoading={setLoading}    
+                    todoId={todoId}                
                 />
             </Modal>
 

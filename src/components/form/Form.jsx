@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineWarning } from "react-icons/md";
 import { Button } from '..'
-import { PostTask } from "../../hooks/useTask";
+import { EditTask, PostTask } from "../../hooks/useTask";
 import { PostTodo } from "../../hooks/useTodo";
 
-export const Form = ({ formType, onCancel, setLoading, todoId }) => {
+export const Form = ({ formType, onCancel, setLoading, todoId, onClick, taskData, isEdit }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const OnSubmit = async (data) => {
         if(formType === "group"){
@@ -15,7 +15,8 @@ export const Form = ({ formType, onCancel, setLoading, todoId }) => {
             setLoading(false);     
         }else if(formType === "task"){
             setLoading(true);
-            await PostTask(data.name, data.progress_percentage, todoId);
+            isEdit ? await EditTask(data.name, data.progress_percentage, todoId, taskData.id) : await PostTask(data.name, data.progress_percentage, todoId);
+            
             onCancel();
             setLoading(false);
         }
@@ -34,7 +35,7 @@ export const Form = ({ formType, onCancel, setLoading, todoId }) => {
             >
                 <div className="flex flex-col gap-2">
                     <label htmlFor="name" className="font-bold text-gray-700">Task Name</label>
-                    <input {...register('name', { required: 'Task Name Required!' })} type="text" placeholder="Type your Task" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none" />
+                    <input defaultValue={taskData?.name || ''} {...register('name', { required: 'Task Name Required!' })} type="text" placeholder="Type your Task" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none" />
                     {
                         errors.name?.type === 'required' &&  
                         <div className="flex items-center text-red-500 gap-1 w-full font-bold">                        
@@ -46,7 +47,7 @@ export const Form = ({ formType, onCancel, setLoading, todoId }) => {
 
                 <div className="flex flex-col gap-2">
                     <label htmlFor="progress_percentage" className="font-bold text-gray-700">Progress</label>
-                    <input {...register('progress_percentage', { required: 'Percentage Required!' })} type="number" placeholder="70%" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none w-1/3" />
+                    <input defaultValue={taskData?.progress_percentage || ''} {...register('progress_percentage', { required: 'Percentage Required!' })} type="number" placeholder="70%" className="text-gray-500 border-2 border-gray-300 rounded py-2 px-4 outline-none w-1/3" />
                     {
                         errors.progress_percentage?.type === 'required' &&  
                         <div className="flex items-center text-red-500 gap-1 w-full font-bold">                        
@@ -57,7 +58,7 @@ export const Form = ({ formType, onCancel, setLoading, todoId }) => {
                 </div>
 
                 <div className="flex w-full justify-end gap-5 items-center">
-                    <Button onClick={ (e) => cancelHandler(e) }>
+                    <Button onClick={ onCancel }>
                         <p>Cancel</p>
                     </Button>
                     <Button type="primary">
@@ -120,7 +121,7 @@ export const Form = ({ formType, onCancel, setLoading, todoId }) => {
                         <Button onClick={ (e) => cancelHandler(e) }>
                             <p>Cancel</p>
                         </Button>
-                        <Button type="danger">
+                        <Button type="danger" onClick={onClick}>
                             <p>Delete</p>
                         </Button>
                     </div>

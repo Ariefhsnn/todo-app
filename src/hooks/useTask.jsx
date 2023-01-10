@@ -14,10 +14,7 @@ export const GetTask = (loading, todoId) => {
                     let prev = new Date(a.created_at).getTime(); 
                     let curr = new Date(b.created_at).getTime();                    
                     return prev < curr ? 1 : -1;
-                }); 
-
-                console.log(sorted, 'sorted data');
-                console.log(res.data, 'not sorted yet');
+                });                                 
 
                 setTaskData(sorted)
             } catch (error) {
@@ -43,7 +40,7 @@ export const PostTask = async (name, progress_percentage, todoId) => {
     }
 }
 
-export const EditTask = async (name, todoId, taskId, progress_percentage) => {
+export const EditTask = async (name, progress_percentage, todoId, taskId, ) => {
     try {
         const res = await axios.patch(`todos/${todoId}/items/${taskId}`, {name, progress_percentage}, config);
         let { status } = res;

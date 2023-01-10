@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { ProgressBar, Dropdown } from "..";
 import { Transition } from '@headlessui/react'
 
-export const TaskCard = ({ data, next, prev, setLoading, todoId, taskId, children }) => {
+export const TaskCard = ({ data, next, prev, setLoading, todoId, taskId }) => {
 
     const [selected, setSelected] = useState(false);
 
@@ -35,6 +35,7 @@ export const TaskCard = ({ data, next, prev, setLoading, todoId, taskId, childre
                                 todoId={todoId} 
                                 taskId={taskId} 
                                 setSelected={setSelected}
+                                data={data}
                             />  
                         </div>
                     </div>

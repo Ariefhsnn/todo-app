@@ -3,11 +3,29 @@ import { BsThreeDots } from 'react-icons/bs';
 import { Popover, Transition } from '@headlessui/react'
 import * as Icons from "react-icons/md";
 import { DeleteTask, EditTask, MoveTask } from "../../hooks/useTask";
+import { Modal, Form } from '..'
 
-export const Dropdown = ({todoId, taskId, setLoading, next, prev, setSelected}) => {
 
-    const [isOpen, setIsOpen] = useState(false);
+export const Dropdown = ({todoId, taskId, setLoading, next, prev, setSelected, data}) => {
+
+    const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+
+    const openModalEdit = () => {
+        setIsShowModalEdit(true);
+    }
     
+    const closeModalEdit = () => {
+        setIsShowModalEdit(false);
+    }
+
+    const openModalDelete = () => {
+        setIsShowModalDelete(true);
+    }
+    
+    const closeModalDelete = () => {
+        setIsShowModalDelete(false);
+    }
 
     const Option = ({name, onClick, danger, icon}) => {
         const Icon = ({ icon, ...props }) => {
@@ -85,12 +103,12 @@ export const Dropdown = ({todoId, taskId, setLoading, next, prev, setSelected}) 
                                             onClick={onMovePrev}
                                         />
                                     )}                                
-                                    <Option name="Edit" icon="MdOutlineEdit" />
+                                    <Option onClick={openModalEdit} name="Edit" icon="MdOutlineEdit" />
                                     <Option 
                                         name="Delete" 
                                         icon="MdOutlineDelete" 
                                         danger   
-                                        onClick={onDelete}                              
+                                        onClick={openModalDelete}                              
                                     />
                                 </div>
                             </Popover.Panel>
@@ -100,6 +118,37 @@ export const Dropdown = ({todoId, taskId, setLoading, next, prev, setSelected}) 
                 }}
                 
             </Popover>
+
+            {/* Modal Edit */}
+            <Modal
+                isOpen={isShowModalEdit}
+                closeModal={closeModalEdit}
+                title="Edit Task"                
+            >
+                <Form 
+                    formType="task" 
+                    onCancel={closeModalEdit} 
+                    taskData={data}
+                    setLoading={setLoading}
+                    isEdit
+                    todoId={todoId}
+                />
+            </Modal>
+
+            {/* Modal Delete */}
+            <Modal
+                isOpen={isShowModalDelete}
+                closeModal={closeModalDelete}
+                title="Delete Task"
+                icon="MdOutlineWarningAmber"                
+            >
+                <Form 
+                    formType="delete" 
+                    onCancel={closeModalDelete} 
+                    onClick={onDelete}                    
+                />
+            </Modal>
+
         </div>                
     )
 }
