@@ -10,7 +10,16 @@ export const GetTask = (loading, todoId) => {
             try {
                 const res = await axios.get(`todos/${todoId}/items`, config);
                 
-                setTaskData(res.data)
+                let sorted = res.data.sort((a, b) => {
+                    let prev = new Date(a.created_at).getTime(); 
+                    let curr = new Date(b.created_at).getTime();                    
+                    return prev < curr ? 1 : -1;
+                }); 
+
+                console.log(sorted, 'sorted data');
+                console.log(res.data, 'not sorted yet');
+
+                setTaskData(sorted)
             } catch (error) {
                 console.log(error.response);
             }
@@ -34,9 +43,9 @@ export const PostTask = async (name, progress_percentage, todoId) => {
     }
 }
 
-export const EditTask = async (name, todoId, taskId, targetId) => {
+export const EditTask = async (name, todoId, taskId, progress_percentage) => {
     try {
-        const res = await axios.patch(`todos/${todoId}/items/${taskId}`, {name, target_todo_id: targetId}, config);
+        const res = await axios.patch(`todos/${todoId}/items/${taskId}`, {name, progress_percentage}, config);
         let { status } = res;
         if(status === 201 || status === 200){
             return status;
@@ -55,5 +64,17 @@ export const DeleteTask = async (todoId, taskId) => {
         }
     } catch (error) {
         console.log(error.response);
+    }
+}
+
+export const MoveTask = async (todoId, taskId, targetId) => {
+    try {
+        const res = await axios.patch(`todos/${todoId}/items/${taskId}`, {target_todo_id: targetId}, config);
+        let { status } = res;
+        if(status === 200 || status === 201){
+            return status;
+        }
+    } catch (error) {
+        console.log(error.response);   
     }
 }

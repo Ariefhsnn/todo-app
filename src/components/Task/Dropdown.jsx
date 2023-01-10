@@ -1,10 +1,13 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsThreeDots } from 'react-icons/bs';
 import { Popover, Transition } from '@headlessui/react'
 import * as Icons from "react-icons/md";
-import { DeleteTask } from "../../hooks/useTask";
+import { DeleteTask, EditTask, MoveTask } from "../../hooks/useTask";
 
-export const Dropdown = ({todoId, taskId, setLoading}) => {
+export const Dropdown = ({todoId, taskId, setLoading, next, prev, setSelected}) => {
+
+    const [isOpen, setIsOpen] = useState(false);
+    
 
     const Option = ({name, onClick, danger, icon}) => {
         const Icon = ({ icon, ...props }) => {
@@ -29,41 +32,72 @@ export const Dropdown = ({todoId, taskId, setLoading}) => {
         setLoading(false)        
     }
 
+    const onMoveNext = async() => {
+        setLoading(true);
+        await MoveTask(todoId, taskId, next);
+        setLoading(false);
+    }
+
+    const onMovePrev = async() => {
+        setLoading(true);
+        await MoveTask(todoId, taskId, prev);
+        setLoading(false);
+    }
+
+    const onEdit = async() => {
+        setLoading(true);
+        await EditTask
+    }   
+
     return (
-        <div className="flex w-full justify-end">
+        <div className="flex w-full justify-end relative">
             <Popover>
-                {({ open }) => (
-                    <>
-                    <Popover.Button as="button">
-                        <BsThreeDots className="text-gray-500 flex text-xl" />        
-                    </Popover.Button>
-                     <Transition
-                        as="div"
-                        appear
-                        show={open}                    
-                        enter="ease-in-out duration-300"
-                        enterFrom="opacity-0 scale-0"
-                        enterTo="opacity-100 scale-100"
-                        leave="ease-in-out duration-300"
-                        leaveFrom="opacity-100 scale-100"
-                        leaveTo="opacity-0 scale-0"
-                    > 
-                        <Popover.Panel as="div" className="fixed z-[1000] w-64 right-0.5">                            
-                            <div className="flex flex-col gap-3 bg-white border rounded-md py-3.5 px-4">
-                                <Option name="Move Right" icon="MdArrowForward" />
-                                <Option name="Move Left" icon="MdArrowBack" />
-                                <Option name="Edit" icon="MdOutlineEdit" />
-                                <Option 
-                                    name="Delete" 
-                                    icon="MdOutlineDelete" 
-                                    danger   
-                                    onClick={onDelete}                              
-                                />
-                            </div>
-                        </Popover.Panel>
-                     </Transition> 
-                     </>
-                )}
+                {({ open }) => {                                      
+                    return (                    
+                        <>                   
+                        <Popover.Button as="button" onClick={() => setSelected(curr => !curr)}>
+                            <BsThreeDots className="text-gray-500 flex text-xl" />        
+                        </Popover.Button>
+                         <Transition
+                            as="div"
+                            appear
+                            show={open}                    
+                            enter="ease-in-out duration-300"
+                            enterFrom="opacity-0 scale-0"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in-out duration-300"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-0"
+                        > 
+                            <Popover.Panel as="div" className="absolute z-[1000] w-64 right-0.5">                            
+                                <div className="flex flex-col gap-3 bg-white border rounded-md py-3.5 px-4">
+                                    {next && (
+                                        <Option 
+                                            name="Move Right" 
+                                            icon="MdArrowForward" 
+                                            onClick={onMoveNext}
+                                        />
+                                    )}
+                                    {prev && (
+                                        <Option 
+                                            name="Move Left" 
+                                            icon="MdArrowBack" 
+                                            onClick={onMovePrev}
+                                        />
+                                    )}                                
+                                    <Option name="Edit" icon="MdOutlineEdit" />
+                                    <Option 
+                                        name="Delete" 
+                                        icon="MdOutlineDelete" 
+                                        danger   
+                                        onClick={onDelete}                              
+                                    />
+                                </div>
+                            </Popover.Panel>
+                         </Transition> 
+                         </>
+                    )
+                }}
                 
             </Popover>
         </div>                

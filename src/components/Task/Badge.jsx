@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-export const Badge = ({title}) => {
+export const Badge = ({title, color}) => {
+    useEffect(() => {
+        console.log(color, 'color11')
+    }, [color])
     return (       
         <div>
-            <span className=" py-0.5 px-2 border border-green-500 rounded text-xs text-green-500">{title}</span>
+            <span className="py-0.5 px-2 border rounded text-xs" style={{borderColor: color, color: color}}>{title}</span>
         </div>         
     )
 }

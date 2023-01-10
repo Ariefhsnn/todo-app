@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Badge, Dropdown } from "..";
 import { TaskCard } from "..";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { Transition } from '@headlessui/react';
 import { GetTask } from '../../hooks/useTask'
 
-export const GroupTask = ({title, description, onClick, id, loading, setLoading}) => {    
-    const taskData = GetTask(loading, id)
+export const GroupTask = ({title, description, onClick, id, loading, setLoading, next, prev, color}) => {    
+    const taskData = GetTask(loading, id)   
 
     return (
         <Transition
@@ -18,8 +18,11 @@ export const GroupTask = ({title, description, onClick, id, loading, setLoading}
             enterTo="opacity-100 translate-y-0 scale-100"                        
         >
             <div className="h-[90vh]">
-                <div className="flex z-0 h-auto flex-col p-4 border gap-2 border-green-500 rounded bg-green-50">
-                    <Badge title={title} />
+                <div 
+                    className="flex z-0 h-auto flex-col p-4 border gap-2 rounded" 
+                    style={{backgroundColor: color?.bgColor, borderColor: color?.color}}
+                >
+                    <Badge title={title} color={color?.color} />
                     <p className="text-xs font-bold">{description}</p>
                     <div className="max-h-screen flex flex-col gap-3">
                         {taskData.length > 0 ?taskData?.map((task, idx) => (
@@ -28,15 +31,10 @@ export const GroupTask = ({title, description, onClick, id, loading, setLoading}
                                 todoId={id} 
                                 taskId={task.id} 
                                 data={task} 
-                            > 
-                                <div className="z-10">
-                                    <Dropdown 
-                                        setLoading={setLoading} 
-                                        todoId={id} 
-                                        taskId={task.id} 
-                                    />  
-                                </div>                                 
-                            </TaskCard>
+                                next={next}
+                                prev={prev}
+                                setLoading={setLoading}
+                            />                                                                                            
                         )): (
                             <TaskCard />
                         )}
