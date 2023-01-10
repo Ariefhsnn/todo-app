@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Navbar, Modal, Form, GroupTask, Loader } from "../components";
+import { Navbar, Modal, Form, GroupTask, Loader } from "../../components";
 import { useState } from "react";
-import { GetTodo } from "../hooks/useTodo";
-import { randomGenerator } from "../utils/useFunction";
+import { GetTodo } from "../../hooks/useTodo";
+import { randomGenerator } from "../../utils/useFunction";
 
 export default function Index(){
     const [isShowModalAddTask, setIsShowModalAddTask] = useState(false);
